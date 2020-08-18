@@ -28,7 +28,7 @@ fn get_available_player_pairings(
             None => {
                 pairings.push(i);
             },
-            Some(_) => {
+            _ => {
                 continue;
             }
         }
@@ -48,7 +48,6 @@ fn match_players(
     let available_pairings = get_available_player_pairings(players, matchings, group_id);
 
     if available_pairings.len() == 0 {
-        println!("size to small, restarting");
         return false;
     }
 
@@ -57,20 +56,18 @@ fn match_players(
     }
     print!("\n");
     for available_pair in available_pairings {
-
-        // println!("Inserting {} as {}", available_pair, id);
         matchings.insert(available_pair, current_player);
 
         if current_player + 1 == players.len() {
             return true;
         }
-
-        if match_players(players, matchings, current_player + 1) {
+        else if match_players(players, matchings, current_player + 1) {
             return true;
         }
-        print!("match failed on {} in group {}", current_player, group_id)
+        else {
+            matchings.remove(&available_pair);
+        }
     }
-    print!("\n");
 
     false
 }
@@ -95,8 +92,8 @@ fn main(){
     players.push(collin);
     players.push(zoe);
     players.push(emily);
-    // players.push(hayden);
-    // players.push(colton);
+    players.push(hayden);
+    players.push(colton);
 
     if match_players(&mut players, &mut matchings, 0) {
         println!("Sorted!");
