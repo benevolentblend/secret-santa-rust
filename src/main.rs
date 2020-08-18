@@ -3,17 +3,24 @@ use rand::thread_rng;
 use std::fmt;
 use std::collections::HashMap;
 
+/// Contains information about a Player
 struct Player {
     name: &'static str,
     group_id: u32
 }
 
+/// Displays a Player, with their name and group id
+/// EX: Player: Ben (1)
 impl fmt::Display for Player {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "Player: {} ({})", self.name, self.group_id)
     }
 }
 
+/// Gets a list of players that could be matched
+/// 
+/// A player could be a match if they are un matched, 
+/// and not in the same group as the player
 fn get_available_player_pairings(
     players: &Vec<Player>,
     matchings: &HashMap<usize, usize>,
@@ -23,14 +30,8 @@ fn get_available_player_pairings(
     for (i, player) in players.iter().enumerate() {
         if player.group_id == current_group {
             continue;
-        }
-        match matchings.get(&i) { 
-            None => {
-                pairings.push(i);
-            },
-            _ => {
-                continue;
-            }
+        } else if !matchings.contains_key(&i) { 
+            pairings.push(i);
         }
     }
 
@@ -103,11 +104,8 @@ fn main(){
     }
 
     for (i, player) in players.iter().enumerate() {
-        let player_match = match matchings.get(&i) {
-            None => panic!("Couldn't find anyone"),
-            Some(i) => i
-        };
+        let player_match =  matchings[&i];
 
-        println!("{} matched with {}", player, &players[*player_match]);
+        println!("{} matched with {}", player, &players[player_match]);
     }
 }
