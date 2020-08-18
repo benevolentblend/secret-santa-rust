@@ -53,7 +53,7 @@ fn match_players(
     }
 
     for available_pair in &available_pairings {
-        print!(" {}", available_pair);
+        print!("{} ", available_pair);
     }
     print!("\n");
     for available_pair in available_pairings {
@@ -73,39 +73,27 @@ fn match_players(
     false
 }
 
-
 fn main(){
     let mut players = Vec::new();
     let mut matchings = HashMap::new();
 
-    let ben = Player {name: "Ben", group_id: 1};
-    let andrew = Player {name: "Andrew", group_id: 1};
-    let nick = Player {name: "Nick", group_id: 2};
-    let collin = Player {name: "Collin", group_id: 2};
-    let zoe = Player {name: "Zoe", group_id: 3};
-    let emily = Player {name: "Emily", group_id: 3};
-    let hayden = Player {name: "Hayden", group_id: 4};
-    let colton = Player {name: "Colton", group_id: 4};
+    players.push(Player {name: "Ben", group_id: 1});
+    players.push(Player {name: "Alex", group_id: 1});
+    players.push(Player {name: "Chad", group_id: 1});
+    players.push(Player {name: "Eric", group_id: 2});
+    players.push(Player {name: "Kristin", group_id: 2});
+    players.push(Player {name: "Dan", group_id: 3});
+    players.push(Player {name: "Molly", group_id: 3});
+    players.push(Player {name: "Ken", group_id: 4});
 
-    players.push(ben);
-    players.push(andrew);
-    players.push(nick);
-    players.push(collin);
-    players.push(zoe);
-    players.push(emily);
-    players.push(hayden);
-    players.push(colton);
-
-    if match_players(&mut players, &mut matchings, 0) {
-        println!("Sorted!");
-    }
-    else {
-        println!("Failed to sort :(");
+    match match_players(&mut players, &mut matchings, 0) {
+        true => println!("Matched!"),
+        false => println!("Match failed :("),
     }
 
     for (i, player) in players.iter().enumerate() {
-        let player_match =  matchings[&i];
+        let i = matchings[&i];
 
-        println!("{} matched with {}", player, &players[player_match]);
+        println!("{} matched with {}", player, &players[i]);
     }
 }
