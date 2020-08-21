@@ -52,10 +52,6 @@ fn match_players(
         return false;
     }
 
-    for available_pair in &available_pairings {
-        print!("{} ", available_pair);
-    }
-    print!("\n");
     for available_pair in available_pairings {
         matchings.insert(available_pair, current_player);
 
@@ -86,14 +82,19 @@ fn main(){
     players.push(Player {name: "Molly", group_id: 3});
     players.push(Player {name: "Ken", group_id: 4});
 
-    match match_players(&mut players, &mut matchings, 0) {
-        true => println!("Matched!"),
-        false => println!("Match failed :("),
-    }
+    for _ in 0..1000 {
+        if match_players(&mut players, &mut matchings, 0) {
+            for (i, _) in players.iter().enumerate() {
+                let matched_player = matchings[&i];
+        
+                print!("{}", players[matched_player].name);
+                if players.len() != i + 1 {
+                    print!(", ");
+                }
+            }
+            print!("\n");
+        }
 
-    for (i, player) in players.iter().enumerate() {
-        let i = matchings[&i];
-
-        println!("{} matched with {}", player, &players[i]);
+        matchings = HashMap::new();
     }
 }
